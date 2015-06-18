@@ -26,6 +26,7 @@ public class Buttons : MonoBehaviour {
 	//HP
 	private string inputHP = "0";
 	private float hpToFloat;
+	private string offenseInp = "0 - 30%";
 	//
 
 	
@@ -35,7 +36,7 @@ public class Buttons : MonoBehaviour {
 		//initializing base stats
 
 		currentHP = 80;
-		currentAtk = 20;
+	
 		
 	}
 	
@@ -97,6 +98,8 @@ public class Buttons : MonoBehaviour {
 
 		//input del usuario en HP
 		inputHP = GUI.TextField (new Rect (500, 25, 100, 30), inputHP, 3);
+		//input additional damage A.K.A offensive
+		offenseInp = GUI.TextField (new Rect(500, 60, 100, 30), offensive, 2);
 
 
 		//solo prueba que este checando lo que se mete
@@ -168,17 +171,19 @@ public class Buttons : MonoBehaviour {
 	void Pow() {
 
 		//default val
-		currentAtk = 20;
+		baseAtk = 20;
+		//base attack mas bonus del jugador
+		currentAtk = baseAtk + currentAtk;
 		//close combat attack
 
-
+		//calls critical hit damage * 2
 		CriticalHit ();
 
 
 		Debug.Log ("swosh");
 		if(criticalHit == 8)
 		{
-			currentHP -= currentAtk + 10 * 2;
+			currentHP -= currentAtk * 2;
 		}
 		else
 		{
@@ -257,6 +262,15 @@ public class Buttons : MonoBehaviour {
 		//generating random
 		criticalHit = Random.Range(1,10);
 		Debug.Log(criticalHit);
+	}
+
+	//buffs and debuffs
+
+	void AdiditonalDamage() {
+
+		offensive = currentAtk;
+
+		currentAtk = baseAtk + offensive;
 	}
 
 
