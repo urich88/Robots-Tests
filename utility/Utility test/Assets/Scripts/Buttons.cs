@@ -106,7 +106,9 @@ public class Buttons : MonoBehaviour {
 
 		//Buttons in GUI
 		#region Buttons
-		
+
+		#region $Player buttons$
+		//attack buttons
 		if (GUI.Button(new Rect(10, 70, 50, 30), "Punch"))
 		{
 			currentHP = float.Parse(inputHP);
@@ -128,6 +130,7 @@ public class Buttons : MonoBehaviour {
 			
 		}
 
+		//Player 2 attack buttons
 		if (GUI.Button(new Rect(140, 70, 80, 30), "Punch2"))
 		{
 			Debug.Log("pow2!");
@@ -143,6 +146,17 @@ public class Buttons : MonoBehaviour {
 			
 		}
 		#endregion
+
+		#endregion $Player buttons$
+
+		//Regenerate HP only if HP = 0
+
+			if (GUI.Button(new Rect(500, 80, 100, 30), "+80 HP"))
+		{
+			currentHP += 80;
+		}
+
+
 
 		#endregion $GUI$
 
