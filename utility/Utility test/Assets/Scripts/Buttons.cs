@@ -97,9 +97,11 @@ public class Buttons : MonoBehaviour {
 	void OnGUI() {
 
 		//input del usuario en HP
-		inputHP = GUI.TextField (new Rect (500, 25, 100, 30), inputHP, 3);
-		//input additional damage A.K.A offensive
-		offenseInp = GUI.TextField (new Rect(500, 60, 100, 30), offensive, 2);
+		inputHP = GUI.TextField (new Rect (500, 25, 100, 30), currentHP.ToString(), 3);
+		//input by button added display, additional damage A.K.A offensive
+		offenseInp = GUI.TextField (new Rect(500, 60, 100, 30), offensive.ToString(), 2);
+
+
 
 
 		//solo prueba que este checando lo que se mete
@@ -152,12 +154,22 @@ public class Buttons : MonoBehaviour {
 
 		#endregion $Player buttons$
 
+		#region $Buffs$
+
 		//Regenerate HP only if HP = 0
 
-			if (GUI.Button(new Rect(500, 80, 100, 30), "+80 HP"))
+			if (GUI.Button(new Rect(500, 100, 100, 30), "+80 HP"))
 		{
 			currentHP += 80;
 		}
+		//offense button bonus to add to the attack, sums +5 each time
+			if (GUI.Button (new Rect (500, 150, 50, 50), "+5"))
+		{
+			offensive += baseAtk * 5 / 100;
+
+		}
+
+		#endregion $Buffs$
 
 
 
@@ -178,6 +190,8 @@ public class Buttons : MonoBehaviour {
 
 		//calls critical hit damage * 2
 		CriticalHit ();
+		//adds offense
+		AdiditonalDamage();
 
 
 		Debug.Log ("swosh");
@@ -201,6 +215,8 @@ public class Buttons : MonoBehaviour {
 
 		//range attack
 		CriticalHit ();
+		//adds offense
+		AdiditonalDamage();
 
 
 		Debug.Log("fuuu");
@@ -223,6 +239,8 @@ public class Buttons : MonoBehaviour {
 		currentAtk = 50;
 
 		CriticalHit ();
+		//adds offense
+		AdiditonalDamage();
 
 
 		Debug.Log("fghhh");
@@ -240,6 +258,8 @@ public class Buttons : MonoBehaviour {
 	}
 
 	#endregion
+
+	#region $bonuses$
 
 	//the posibility than an attack its succesful or not
 
@@ -268,10 +288,11 @@ public class Buttons : MonoBehaviour {
 
 	void AdiditonalDamage() {
 
-		offensive = currentAtk;
 
 		currentAtk = baseAtk + offensive;
 	}
+
+	#endregion $bonuses$
 
 
 
