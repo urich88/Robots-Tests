@@ -21,12 +21,16 @@ public class Buttons : MonoBehaviour {
 	public float supersentidos; //swiftness
 	public float precision; //entra o no entra el golpe
 	public float presNum;
-	public float offensive; //additional damage
+	//additional damage
+	public float offensive; 
+	public float bonus;
 	//vars to get the input on the GUI
 	//HP
 	private string inputHP = "0";
 	private float hpToFloat;
+	//offense
 	private string offenseInp = "0 - 30%";
+
 	//
 
 	
@@ -36,12 +40,16 @@ public class Buttons : MonoBehaviour {
 		//initializing base stats
 
 		currentHP = 80;
+		offensive = 0;
 	
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		Debug.Log (bonus);
+		Debug.Log (offensive);
 
 
 		//currentHP = float.Parse(inputHP); //why it doesnt work the attacks here?
@@ -55,6 +63,12 @@ public class Buttons : MonoBehaviour {
 		{
 			currentHP = 120;
 		}
+
+
+
+
+
+
 		//Keyboard input to test certain process, make comment ones the GUI works completely.
 		#region $alternativeInput$
 		if(Input.GetKeyDown("a"))
@@ -99,7 +113,8 @@ public class Buttons : MonoBehaviour {
 		//input del usuario en HP
 		inputHP = GUI.TextField (new Rect (500, 25, 100, 30), currentHP.ToString(), 3);
 		//input by button added display, additional damage A.K.A offensive
-		offenseInp = GUI.TextField (new Rect(500, 60, 100, 30), offensive.ToString(), 2);
+		offenseInp = GUI.TextField (new Rect(500, 60, 100, 30), bonus.ToString(), 2);
+
 
 
 
@@ -110,7 +125,7 @@ public class Buttons : MonoBehaviour {
 		        "\nspeed: " + speed);
 
 		//Buttons in GUI
-		#region Buttons
+		#region $Buttons$
 
 		#region $Player buttons$
 		//attack buttons
@@ -165,8 +180,14 @@ public class Buttons : MonoBehaviour {
 		//offense button bonus to add to the attack, sums +5 each time
 			if (GUI.Button (new Rect (500, 150, 50, 50), "+5"))
 		{
-			offensive += baseAtk * 5 / 100;
+			bonus += 5;
 
+
+		}
+		//presicion button [swiftness/supersentidos]
+		if (GUI.Button (new Rect (580, 150, 70, 70), "Swift"))
+		{
+			Presicion ();
 		}
 
 		#endregion $Buffs$
@@ -184,14 +205,25 @@ public class Buttons : MonoBehaviour {
 
 		//default val
 		baseAtk = 20;
-		//base attack mas bonus del jugador
-		currentAtk = baseAtk + currentAtk;
+		//base attack
+		currentAtk += baseAtk;
 		//close combat attack
 
 		//calls critical hit damage * 2
 		CriticalHit ();
 		//adds offense
 		AdiditonalDamage();
+		//Supersentidos o no?
+		Presicion ();
+
+		if (precision >= 40)
+		{
+			currentAtk += baseAtk;
+		}
+		if (precision <= 40)
+		{
+			currentAtk = 0;
+		}
 
 
 		Debug.Log ("swosh");
@@ -211,13 +243,26 @@ public class Buttons : MonoBehaviour {
 	void Pew() {
 
 		//default val
-		currentAtk = 40;
+		baseAtk = 40;
+		//base attack
+		currentAtk += baseAtk;
 
 		//range attack
 		CriticalHit ();
 		//adds offense
 		AdiditonalDamage();
-
+		//Supersentidos o no?
+		Presicion ();
+		
+		if (precision >= 60)
+		{
+			currentAtk += baseAtk;
+		}
+		if (precision <= 60)
+		{
+			currentAtk = 0;
+		}
+	
 
 		Debug.Log("fuuu");
 
@@ -236,13 +281,26 @@ public class Buttons : MonoBehaviour {
 	//super attack
 	void Protocanon() {
 
-		currentAtk = 50;
+		//default val
+		baseAtk = 50;
+		//base attack
+		currentAtk += baseAtk;
 
+		//super attack
 		CriticalHit ();
 		//adds offense
 		AdiditonalDamage();
-
-
+		//Supersentidos o no?
+		Presicion ();
+		
+		if (precision >= 80)
+		{
+			currentAtk += baseAtk;
+		}
+		if (precision <= 80)
+		{
+			currentAtk = 0;
+		}
 		Debug.Log("fghhh");
 
 		if(criticalHit == 8)
@@ -261,16 +319,30 @@ public class Buttons : MonoBehaviour {
 
 	#region $bonuses$
 
+	/*supersentidos*/
+
 	//the posibility than an attack its succesful or not
 
 	void Presicion() {
 
-		float totalPres;
+		//presicion base
+		presNum = 40;
+		//random del bonificador del personaje en este caso
+		//generating random
+		supersentidos = Random.Range(0,40);
+		Debug.Log(supersentidos);
+		//sumando los bonus
+		precision = presNum + supersentidos;
+		Debug.Log(precision);
 
-		presNum = precision/100;
-		totalPres = currentAtk * presNum;
-		Debug.Log(presNum);
-		Debug.Log(totalPres);
+
+
+	
+		/*if (precision <= 40)
+		{
+			//aqui iria el ataque a uno mismo si fallas?
+		}
+*/
 
 	}
 
@@ -289,7 +361,7 @@ public class Buttons : MonoBehaviour {
 	void AdiditonalDamage() {
 
 
-		currentAtk = baseAtk + offensive;
+		offensive += baseAtk * bonus / 100;
 	}
 
 	#endregion $bonuses$
